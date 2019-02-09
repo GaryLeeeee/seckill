@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by GaryLee on 2019-01-31 22:13.
+ * 秒杀记录(seckillId,userPhone)
  */
 public class SuccessKilled {
     private long seckillId;
@@ -11,6 +12,17 @@ public class SuccessKilled {
     private short state;
     private Date createTime;
 
+    //非数据库字段
+    //多对一
+    private Seckill seckill;
+
+    public Seckill getSeckill() {
+        return seckill;
+    }
+
+    public void setSeckill(Seckill seckill) {
+        this.seckill = seckill;
+    }
 
     public long getSeckillId() {
         return seckillId;

@@ -4,11 +4,12 @@ import java.util.Date;
 
 /**
  * Created by GaryLee on 2019-01-31 22:11.
+ * 秒杀对象
  */
 public class Seckill {
     private long seckillId;
     private String name;
-    private int num;
+    private int number;
     private Date startTime;
     private Date endTime;
     private Date createTime;
@@ -29,12 +30,12 @@ public class Seckill {
         this.name = name;
     }
 
-    public int getNum() {
-        return num;
+    public int getNumber() {
+        return number;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setNum(int number) {
+        this.number = number;
     }
 
     public Date getStartTime() {
@@ -66,7 +67,7 @@ public class Seckill {
         return "Seckill{" +
                 "seckillId=" + seckillId +
                 ", name='" + name + '\'' +
-                ", num=" + num +
+                ", number=" + number +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", createTime=" + createTime +
