@@ -30,14 +30,11 @@
                     <tr>
                         <td th:text="${item.name}"></td>
                         <td th:text="${item.number}"></td>
-                        <td th:text="${item.startTime}">
-                            <!--<fmt:formatDate value="${item.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/>-->
+                        <td th:text="${#dates.format(item.startTime, 'yyyy-MM-dd HH:mm:ss')}">
                         </td>
-                        <td th:text="${item.endTime}">
-                            <!--<fmt:formatDate value="${item.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/>-->
+                        <td th:text="${#dates.format(item.endTime, 'yyyy-MM-dd HH:mm:ss')}">
                         </td>
-                        <td th:text="${item.createTime}">
-                            <!--<fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>-->
+                        <td th:text="${#dates.format(item.createTime, 'yyyy-MM-dd HH:mm:ss')}">
                         </td>
                         <td>
                             <a class="btn btn-info" th:href="@{'/seckill/'+${item.seckillId}+'/detail/'}">秒杀</a>
