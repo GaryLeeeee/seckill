@@ -13,10 +13,12 @@ import com.garylee.seckill.exception.SeckillException;
 import com.garylee.seckill.service.SeckillService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,6 +33,8 @@ public class SeckillServiceImpl implements SeckillService {
     SeckillDao seckillDao;
     @Autowired
     SuccessKilledDao successKilledDao;
+    @Resource
+    RedisTemplate<String,Seckill> redisTemplate;
 
     private final String salt = "garylee";
 
@@ -47,9 +51,22 @@ public class SeckillServiceImpl implements SeckillService {
     //输出秒杀的显示(如剩余时间，是否开启)
     @Override
     public Exposer exportSeckillUrl(long seckillId) {
-        Seckill seckill = seckillDao.queryById(seckillId);
-        if (seckill == null)
-            return new Exposer(false, seckillId);
+        //高并发优化:缓存优化
+        //1.访问redis
+        String key ="seckill-"+seckillId;
+        Seckill seckill = redisTemplate.opsForValue().get(key);
+        if(seckill == null){
+            //redis为空
+            //2.访问数据库
+            seckill = seckillDao.queryById(seckillId);
+            if(seckill ==null) {
+                return new Exposer(false, seckillId);
+            }
+            else {
+                //如果数据库有，redis没有，则写入redis
+                redisTemplate.opsForValue().set(key, seckill);
+            }
+        }
         //获取秒杀开始和结束时间
         Date startTime = seckill.getStartTime();
         Date endTime = seckill.getEndTime();
